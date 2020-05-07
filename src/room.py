@@ -13,4 +13,8 @@ class Room:
         self.w_to = None
 
     def __str__(self):
+        return f"{self.roomname}"
+
+    #from lesson
+    def print_description(self):
         return f"{self.description}"

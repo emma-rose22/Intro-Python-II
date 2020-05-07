@@ -58,10 +58,13 @@ def item_verbs(x, y = None):
 
 print('Welcome to the game! What is your name, adventurer? ')
 gamer_name = input()
-player_1 = Player(gamer_name, 'outside') # I want to change this to user input later
+player_1 = Player(gamer_name, 'outside', room['outside'].description) # I want to change this to user input later
 
 
-print(room[player_1.roomname])
+print(player_1.roomname)
+print(room['outside'].print_description())
+print(' ')
+
 # Write a loop that:
 #
 # * Prints the current room name
@@ -76,8 +79,11 @@ print(room[player_1.roomname])
 while True:
 
     print(' ')
-    print(f"Current Room: {room[player_1.roomname]}")
-    print(f"Room Description: {room[player_1.roomname]}")
+    print(f"Current Room: {player_1.roomname}")
+    print(f"Room Description: {player_1.room_des}")
+    #lesson used text wrapping?
+
+    """
     if room[player_1.roomname].item_list !=[]:
         while True:
             for i in room[player_1.roomname].item_list:
@@ -95,6 +101,12 @@ while True:
             else:
                 print("The item wasn't able to be added, please try again and make sure it is spelled correctly.")
 
+    """
+    ###
+    #Lesson code
+
+    #he also ended up making functions for error handling rather than loops
+    ###
 
     print(' ')
 
@@ -105,32 +117,28 @@ while True:
         print(f'Sad to see you go, {player_1.name}. Come back soon!')
         break
 
+    if player_input in ['n', 's', 'e', 'w']:
+        player_1.roomname = Player.move_to(player_input, player_1.roomname)
+        print(player_1.roomname)
+        continue
+"""
     try:
         if player_input == 'n':
             print('North it is! Onward, into the unknown...')
             print(' ')
-            if player_1.roomname == 'outside':
-                player_1.roomname = 'foyer'
-                
-            elif player_1.roomname == 'foyer':
-                player_1.roomname = 'overlook'
-
-            elif player_1.roomname == 'narrow':
-                player_1.roomname = 'treasure'
+            if room[player_1.roomname].n_to is not None:
+                player_1.roomname = room[player_1.roomname].n_to.roomname
+                player_1.room_des = room[player_1.roomname].n_to.description
+     
             else:
                 print('There is no passage this way... you doing okay goodman?')
-
+            
         elif player_input == 's':
             print('South it is! Onward, into the unknown...')
             print(' ')
-            if player_1.roomname == 'foyer':
-                player_1.roomname = 'outside'
-
-            elif player_1.roomname == 'overlook':
-                player_1.roomname = 'foyer'
-
-            elif player_1.roomname == 'treasure':
-                player_1.roomname = 'narrow'
+            if room[player_1.roomname].s_to:
+                player_1.roomname = room[player_1.roomname].s_to.roomname
+                player_1.room_des = room[player_1.roomname].s_to.description
 
             else:
                 print('There is no passage this way... you doing okay goodman?')
@@ -138,8 +146,9 @@ while True:
         elif player_input == 'e':
             print('East it is! Onward, into the unknown...')
             print(' ')
-            if player_1.roomname == 'foyer':
-                player_1.roomname = 'narrow'
+            if room[player_1.roomname].e_to:
+                player_1.roomname = room[player_1.roomname].e_to.roomname
+                player_1.room_des = room[player_1.roomname].e_to.description
 
             else:
                 print('There is no passage this way... you doing okay goodman?')
@@ -147,8 +156,9 @@ while True:
         elif player_input == 'w':
             print('West it is! Onward, into the unknown...')
             print(' ')
-            if player_1.roomname == 'narrow':
-                player_1.roomname = 'foyer'
+            if room[player_1.roomname].w_to:
+                player_1.roomname = room[player_1.roomname].w_to.roomname
+                player_1.room_des = room[player_1.roomname].w_to.description
             else:
                 print('There is no passage this way... you doing okay goodman?')
         else:
@@ -156,3 +166,4 @@ while True:
             print(' ')
     except:
         pass
+"""
