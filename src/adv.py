@@ -1,11 +1,18 @@
 from room import Room
 from player import Player
+from item import Item
+
+#make some item objects
+item ={
+    'potato' : Item('potato', 'average size potato'),
+    'big potato' : Item('big potato', 'an impressively large potato')
+}
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons", 'big potato'),
+                     "North of you, the cave mount beckons", [item['big potato']]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -55,7 +62,9 @@ print('Welcome to the game, adventurer! What is your name?')
 
 player_name = input()
 
-player = Player(player_name, room['outside'])
+player = Player(player_name, room['outside'], [item['potato'].i_name])
+
+print(player)
 
 while True:
 
@@ -66,9 +75,9 @@ while True:
     print()
 
     #share if items are in room, give option to add them to pockets
-    if player.current_room.print_items() == '[]':
+    if player.current_room.print_items() == None:
         print(f'The {player.current_room} is empty of any valuables.')
-        print(f'player pockets', player.check_pockets())
+        #print(f'player pockets', player.check_pockets())
     else:
         print(f'There is some stuff in the {player.current_room}:')
         print(player.current_room.print_items())
@@ -89,5 +98,15 @@ while True:
     if p_input == 'exit':
         print(f'Come back soon {player_name}!')
         break
+    if p_input == 'check pockets':
+        print(player.check_pockets())
+        print()
+    
+    if p_input == 'drop item':
+        drop_item = print('Please type the item you want to drop')
+        drop_item = input('~~~>')
+        print(player.drop_item(drop_item))
 
-    player.current_room = player.move_to(p_input, player.current_room)
+    #move rooms
+    else:
+     player.current_room = player.move_to(p_input, player.current_room)
