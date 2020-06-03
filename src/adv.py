@@ -64,8 +64,6 @@ player_name = input()
 
 player = Player(player_name, room['outside'], [item['potato'].i_name])
 
-print(player)
-
 while True:
 
     print(f'---: {player.current_room} :---')
