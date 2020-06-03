@@ -2,15 +2,16 @@
 # description attributes.
 
 class Room:
-
-    def __init__(self, roomname, description, item_list=[]):
+    def __init__(self, roomname, description, items = []):
         self.roomname = roomname
         self.description = description
-        self.item_list = item_list
-        self.n_to = None
-        self.s_to = None
-        self.e_to = None
-        self.w_to = None
+        self.items = items
 
     def __str__(self):
+        return f"{self.roomname}"
+
+    def print_description(self):
         return f"{self.description}"
+
+    def print_items(self):
+        return f"{self.items}"

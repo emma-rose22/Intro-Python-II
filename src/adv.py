@@ -5,7 +5,7 @@ from player import Player
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", 'big potato'),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -34,34 +34,12 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-def item_verbs(x, y = None):
-    '''Gives player the ability to pick up and drop items'''
-    if x == 'take':
-        player_1.items.append(y)
-        room.item_list.remove(y)
-        print(f'{y} successfully added to your inventory!')
-        print(' ')
-    elif x == 'drop':
-        try:
-            player_1.items.remove(y)
-            room.item_list.append(y)
-        except:
-            print("You can't drop an item that isn't in your inventory.")
-    else:
-        print('The item could not be added.')
-
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
 
-print('Welcome to the game! What is your name, adventurer? ')
-gamer_name = input()
-player_1 = Player(gamer_name, 'outside') # I want to change this to user input later
-
-
-print(room[player_1.roomname])
 # Write a loop that:
 #
 # * Prints the current room name
@@ -73,86 +51,43 @@ print(room[player_1.roomname])
 #
 # If the user enters "q", quit the game.
 
+print('Welcome to the game, adventurer! What is your name?')
+
+player_name = input()
+
+player = Player(player_name, room['outside'])
+
 while True:
 
-    print(' ')
-    print(f"Current Room: {room[player_1.roomname]}")
-    print(f"Room Description: {room[player_1.roomname]}")
-    if room[player_1.roomname].item_list !=[]:
-        while True:
-            for i in room[player_1.roomname].item_list:
-                print(f"Hey! there is {i} in this room.")
-                print(' ')
+    print(f'---: {player.current_room} :---')
+    print('_______________________________________________')
+    print(f'* {player.current_room.description} *')
+    print('_______________________________________________')
+    print()
 
-            pickup = input(f"Do you want to pick anything up? (Hint: type 'take' and then the item name to add it to you inventory)")
-            if pickup == 'no':
-                print('Okay, this item will be left here.')
-                print(' ')
-                break
-            elif pickup != 'no':
-                item_verbs(pickup.split())
-                break
-            else:
-                print("The item wasn't able to be added, please try again and make sure it is spelled correctly.")
+    #share if items are in room, give option to add them to pockets
+    if player.current_room.print_items() == '[]':
+        print(f'The {player.current_room} is empty of any valuables.')
+        print(f'player pockets', player.check_pockets())
+    else:
+        print(f'There is some stuff in the {player.current_room}:')
+        print(player.current_room.print_items())
+        print('Type in what you want to pick up, or just say None.')
+        p_input = input('~~~>')
+        player.pick_up_items(p_input)
 
+    print()
+    print(f'Which direction do you want to go, {player_name}?')
+    p_input = input('~~~>')
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
 
-    print(' ')
-
-    player_input = input(f'Where do you want to go, {player_1.name}? Please print the first letter of the cardinal direction you seek: ')
-
-    if player_input == 'exit':
-        print(' ')
-        print(f'Sad to see you go, {player_1.name}. Come back soon!')
+    if p_input == 'exit':
+        print(f'Come back soon {player_name}!')
         break
 
-    try:
-        if player_input == 'n':
-            print('North it is! Onward, into the unknown...')
-            print(' ')
-            if player_1.roomname == 'outside':
-                player_1.roomname = 'foyer'
-                
-            elif player_1.roomname == 'foyer':
-                player_1.roomname = 'overlook'
-
-            elif player_1.roomname == 'narrow':
-                player_1.roomname = 'treasure'
-            else:
-                print('There is no passage this way... you doing okay goodman?')
-
-        elif player_input == 's':
-            print('South it is! Onward, into the unknown...')
-            print(' ')
-            if player_1.roomname == 'foyer':
-                player_1.roomname = 'outside'
-
-            elif player_1.roomname == 'overlook':
-                player_1.roomname = 'foyer'
-
-            elif player_1.roomname == 'treasure':
-                player_1.roomname = 'narrow'
-
-            else:
-                print('There is no passage this way... you doing okay goodman?')
-
-        elif player_input == 'e':
-            print('East it is! Onward, into the unknown...')
-            print(' ')
-            if player_1.roomname == 'foyer':
-                player_1.roomname = 'narrow'
-
-            else:
-                print('There is no passage this way... you doing okay goodman?')
-
-        elif player_input == 'w':
-            print('West it is! Onward, into the unknown...')
-            print(' ')
-            if player_1.roomname == 'narrow':
-                player_1.roomname = 'foyer'
-            else:
-                print('There is no passage this way... you doing okay goodman?')
-        else:
-            print('Please type the first letter of the direction you would like to go.')
-            print(' ')
-    except:
-        pass
+    player.current_room = player.move_to(p_input, player.current_room)
