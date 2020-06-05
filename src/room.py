@@ -15,4 +15,4 @@ class Room:
 
     def print_items(self):
         for i in self.room_items:
-            return f"{i.i_name}"
+            return [i.i_name]

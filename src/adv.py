@@ -57,6 +57,15 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+def check_pockets():
+    count = 0
+    print('Your pockets contain... ')
+    for i in player.items:
+        count += 1
+        print(f'{count}. {i}')
+        print(f'   {item[i].i_description}')
+    #     print(f'-- {i.i_description}')
+    #return f"You look inside your pockets and see :{self.items}:" #{self.items.i_description}"
 
 print('Welcome to the game, adventurer! What is your name?')
 
@@ -97,7 +106,8 @@ while True:
         print(f'Come back soon {player_name}!')
         break
     if p_input == 'check pockets':
-        print(player.check_pockets())
+        #print(player.check_pockets())
+        check_pockets()
         print()
     
     if p_input == 'drop item':
